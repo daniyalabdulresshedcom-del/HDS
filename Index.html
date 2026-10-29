@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HDS Chat</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>body{background:#0a0a0a;color:#fff;font-family:sans-serif}.me{background:#00FFA3;color:#000;margin-left:auto;border-radius:18px 18px 4px 18px;padding:10px 14px;max-width:75%;margin-top:6px}.other{background:#1e1e1e;border-radius:18px 18px 18px 4px;padding:10px 14px;max-width:75%;margin-top:6px}</style>
+</head>
+<body class="h-screen flex flex-col">
+<div class="p-4 flex justify-between items-center bg-[#111] border-b border-[#222]"><div class="flex items-center gap-3"><div class="w-8 h-8 bg-[#00FFA3] rounded-lg flex items-center justify-center text-black font-bold">H</div><h1 class="font-bold">HDS</h1></div><div class="flex gap-4 text-gray-400"><i class="fas fa-search"></i></div></div>
+<div class="flex gap-2 p-3 bg-[#111]"><button class="px-4 py-1.5 bg-[#00FFA3] text-black rounded-full text-sm">All</button><button class="px-4 py-1.5 bg-[#1e1e1e] rounded-full text-sm">Unread</button></div>
+<div id="chatList" class="flex-1 overflow-y-auto"></div>
+<div id="chatScreen" class="hidden absolute inset-0 bg-[#0a0a0a] flex flex-col"><div class="p-3 bg-[#111] flex items-center gap-3 border-b border-[#222]"><button onclick="closeChat()" class="p-2"><i class="fas fa-arrow-left"></i></button><img id="chatAvatar" class="w-9 h-9 rounded-full"><div><h2 id="chatName" class="font-semibold"></h2><p class="text-xs text-[#00FFA3]">Online</p></div></div><div id="messages" class="flex-1 overflow-y-auto p-4 flex flex-col"></div><div class="p-3 bg-[#111] flex items-center gap-3"><input id="msgInput" placeholder="Type a message..." class="flex-1 bg-[#1e1e1e] rounded-full px-4 py-3 outline-none text-sm"><button onclick="sendMsg()" class="w-12 h-12 bg-[#00FFA3] rounded-full flex items-center justify-center text-black"><i class="fas fa-paper-plane"></i></button></div></div>
+<script>
+const chats=[{name:"Sophia Chen",msg:"See you at the meeting!",time:"2:30 PM",unread:2,avatar:"https://i.pravatar.cc/150?img=5"},{name:"Liam Vance",msg:"Voice message 0:14",time:"1:15 PM",unread:0,avatar:"https://i.pravatar.cc/150?img=8"},{name:"Maya Patel",msg:"Perfect, thanks!",time:"Yesterday",unread:1,avatar:"https://i.pravatar.cc/150?img=32"},{name:"David Ross",msg:"The project files are...",time:"Yesterday",unread:0,avatar:"https://i.pravatar.cc/150?img=12"}];
+function renderList(){document.getElementById('chatList').innerHTML=chats.map((c,i)=>`<div onclick="openChat(${i})" class="flex items-center gap-3 p-4 hover:bg-[#111] border-b border-[#151515] cursor-pointer"><img src="${c.avatar}" class="w-12 h-12 rounded-full"><div class="flex-1"><div class="flex justify-between"><h3 class="font-medium">${c.name}</h3><span class="text-xs text-gray-500">${c.time}</span></div><p class="text-sm text-gray-400 truncate">${c.msg}</p></div>${c.unread?`<span class="bg-[#00FFA3] text-black text-xs w-5 h-5 rounded-full flex items-center justify-center">${c.unread}</span>`:''}</div>`).join('')}
+function openChat(i){document.getElementById('chatScreen').classList.remove('hidden');document.getElementById('chatName').innerText=chats[i].name;document.getElementById('chatAvatar').src=chats[i].avatar;document.getElementById('messages').innerHTML=`<div class="other">${chats[i].msg}</div>`}
+function closeChat(){document.getElementById('chatScreen').classList.add('hidden')}
+function sendMsg(){let input=document.getElementById('msgInput');if(!input.value)return;document.getElementById('messages').innerHTML+=`<div class="me">${input.value}</div>`;input.value='';let m=document.getElementById('messages');m.scrollTop=m.scrollHeight}
+renderList();
+</script>
+</body>
+</html>
